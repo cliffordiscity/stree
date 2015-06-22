@@ -1,0 +1,122 @@
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.14/angular-ui-router.js"></script>
+<div ng-app="app" ng-controller='AppCtrl'>
+    <script type="text/ng-template" id="categoryTree">
+       <div ng-click="getIndex(category)"> {{ category.title }}  {{ category.title }} </div>
+        <ul ng-if="category.categories">
+            <li ng-repeat="category in category.categories" ng-include="'categoryTree'">asas
+            </li>
+        </ul>
+    </script>
+
+
+
+    <!--<table>-->
+        <!--<tr ng-repeat="category in categories" >-->
+            <!--<td>sa</td>-->
+        <!--</tr>-->
+    <!--</table>-->
+    <ul>
+        <li ng-repeat="category in categories" ng-include="'categoryTree'"></li>
+    </ul>
+    <button ng-click="add()">add</button>
+    <button ng-click="addsub()">addsd</button>
+    <button ng-click="addsubsub()">addssubsub</button>
+</div>
+
+<script type="application/javascript">
+var app = angular.module('app', []);
+
+app.controller('AppCtrl', function ($scope) {
+
+$scope.add = function () {
+    console.log('add');
+    $scope.categories.push({
+        title: 'Printersclif',
+        categories: []
+    });
+};
+    $scope.addsub = function () {
+        console.log($scope.categories.length);
+        $scope.categories[1]['categories'] = [{
+            title: 'Printersclifsub',
+            categories: []
+        }];
+
+};
+
+    $scope.addsubsub = function () {
+
+        $scope.categories[1]['categories'][0]['categories'] = [{
+            title: 'Printersclifsubsub',
+            categories: []
+        }];
+
+    };
+
+    $scope.getIndex = function(cat){
+        console.log($scope.categories.indexOf(cat));
+    };
+
+
+$scope.categories = [
+                        {
+                        title: 'Computers',
+                        categories:
+                                [
+                                        {
+                                        title: 'Laptops',
+                                        categories: [
+                                            {
+                                            title: 'Ultrabooks'
+                                            },
+                                            {
+                                            title: 'Macbooks'
+                                            }
+                                        ]
+                                        },
+
+                                {
+                                title: 'Desktops',
+                                categories: [
+                                    {
+                                        title: 'Ultrabooks'
+                                    },
+                                    {
+                                        title: 'Macbooks',
+                                        categories: [
+                                            {
+                                                title: 'Ultrabooks'
+                                            },
+                                            {
+                                                title: 'Macbooks'
+                                            }
+                                        ]
+                                    }
+                                ]
+                                },
+
+                                {
+                                title: 'Tablets',
+                                categories: [
+                                {
+                                title: 'Apple'
+                                },
+                                {
+                                title: 'Android'
+                                }
+                                ]
+                                }
+                                ]
+                        },
+
+                        {
+                        title: 'Printers',
+                        categories : []
+                        }
+
+                        ];
+
+});
+
+</script>

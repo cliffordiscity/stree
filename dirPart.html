@@ -1,0 +1,14 @@
+<script type="text/ng-template" id="categoryTree">
+    <div ng-click="add(node)"> {{ node.id }}  {{ node.field1 }} {{ node.Downline }} </div>
+    <ul ng-if="node.subnodes">
+        <li ng-repeat="node in node.subnodes" ng-include="'categoryTree'">
+        </li>
+    </ul>
+</script>
+
+
+
+
+<ul>
+    <li ng-repeat="node in nodes" ng-include="'categoryTree'"></li>
+</ul>
