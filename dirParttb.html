@@ -1,10 +1,14 @@
+
 <style type="text/css">
     ul
     {
         list-style-type: none;
     }
-    .row{
-
+    .row {
+        background-color: aliceblue;
+        border: 1px solid;
+        border-color: azure;
+        padding: 5px;
     }
     .prow{
         border:1px;
@@ -23,16 +27,35 @@
     a:active {
         text-decoration: none;
     }
+    .row:hover {
+        background-color: #E2F8FF;
+    }
 </style>
 <script type="text/ng-template" id="categoryTree">
 
-    <div class="row" >
-        <a href=""><span ng-if="node.Downline > 0 && node.expand == false" ng-click="shide(node)" >+</span></a>
-        <a href=""><span ng-if="node.Downline > 0 && node.expand" ng-click="shide(node)" >-</span></a>
+    <div class="row " >
+        <table width="100%" >
+            <tr>
+                <td width="30px" style="text-align: center;"><a href=""><span ng-if="node.Downline > 0 && node.expand == false" ng-click="shide(node)" class="glyphicon glyphicon-plus" ></span></a>
+                    <a href=""><span ng-if="node.Downline > 0 && node.expand" ng-click="shide(node)" class="glyphicon glyphicon-minus" ></span></a>
+                    <a href=""><span ng-if="node.Downline == 0" class="glyphicon glyphicon-user" ></span></a>
+                </td>
+                <td>
+                    {{ node.id }}
+                </td>
+                <td width="500px">
+                    {{ node.field1 }}
+                </td>
+                <td width="100px">
+                    {{ node.Downline }}
+                </td>
+            </tr>
+        </table>
 
-        {{ node.id }}  {{ node.field1 }} {{ node.Downline }} </div>
+
+            </div>
     <ul ng-if="node.subnodes" ng-class="node.expand == false ? 'peekabo' : '' " >
-        <li ng-repeat="node in node.subnodes" ng-include="'categoryTree'">
+        <li ng-repeat="node in node.subnodes" ng-include="'categoryTree'" >
         </li>
     </ul>
 
@@ -42,5 +65,9 @@
 
 
 <ul>
-    <li ng-repeat="node in nodes" ng-include="'categoryTree'"></li>
+    <span ></span>
+    <div style="background-color: aliceblue; padding-left: 15px;">
+        <li ng-repeat="node in nodes" ng-include="'categoryTree'"></li>
+    </div>
+
 </ul>
