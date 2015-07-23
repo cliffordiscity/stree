@@ -28,14 +28,18 @@
 
     <div ng-if="err">
         <div class="alert-message error">
-            <a class="close" href="#">×</a>
-            <p><strong>{{ err_msg }},</strong> You may close this tab and try again.</p>
+            <!--<a class="close" href="#">×</a>-->
+            <p><strong>{{ err_msg }}!</strong>.... You may close this tab and try again.</p>
         </div>
     </div>
+
     <div style="">
     <h2>{{title}}</h2>
-    <div ng-if="err == false" style="color:#428BCA;" class="col-xs-6 col-sm-3">
-       ID
+    <!--<div ng-if="err == false" style="color:#428BCA;" class="col-xs-6 col-sm-3">-->
+       <!--ID-->
+    <!--</div>-->
+    <div  style="color:#428BCA;" class="col-xs-6 col-sm-3">
+        ID
     </div>
     <div ng-repeat="col in col_defs" class="col-xs-6 col-sm-3">{{ col.displayName }}</div>
     </div>

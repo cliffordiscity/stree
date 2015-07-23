@@ -2,9 +2,13 @@
 
 <?php
 
+    $client = explode("/",$_SERVER['REQUEST_URI']);
+    $apiUrl = 'http://' . $_SERVER['HTTP_HOST']."/".$client[1];
+
     $t_parent_id = 'com';
     $t_bns_id = date('Ym');
 
+//    $t_parent_id = 'IDDIAMONDGOLDLION1';//
 //    $t_parent_id = 'IDEXPRESS1';
 //    $t_bns_id = '201505';
 
@@ -30,7 +34,9 @@
 <script type="application/javascript">
 
 
-var app = angular.module('app', ['ui.router']).constant('t_parent_id','<?php echo $t_parent_id; ?>').constant('t_bns_id','<?php echo $t_bns_id; ?>');
+var app = angular.module('app', ['ui.router']).constant('t_parent_id','<?php echo $t_parent_id; ?>')
+    .constant('t_bns_id','<?php echo $t_bns_id; ?>')
+    .constant('apiUrl','<?php echo $apiUrl; ?>');
 
 
 app.config(['$httpProvider', function($httpProvider) {
@@ -41,6 +47,8 @@ app.config(['$httpProvider', function($httpProvider) {
 
 app.config(function($stateProvider, $urlRouterProvider) {
 
+
+
     $urlRouterProvider.otherwise('/');
     $stateProvider
      .state('/', {
@@ -48,15 +56,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 templateUrl: 'dirParttb.html',
                 controller : 'AppCtrl',
                 resolve : {
-                    formBuilder : function(HttpServices,t_parent_id,t_bns_id){
-                        return HttpServices.get('http://mbns.iscity.com.my/upt_indo/custom/c_ajax_tree_bns_b.php?t_parent_id='+t_parent_id+'&t_bns_id='+t_bns_id+'&type=top');
+                    formBuilder : function(HttpServices,t_parent_id,t_bns_id,apiUrl){
+                        return HttpServices.get(apiUrl+'/custom/c_ajax_tree_bns_b.php?t_parent_id='+t_parent_id+'&t_bns_id='+t_bns_id+'&type=top');
                     }
                 }
 
             });
     });
 
-app.controller('AppCtrl', function ($scope,HttpServices,formBuilder,t_bns_id) {
+app.controller('AppCtrl', function ($scope,HttpServices,formBuilder,t_bns_id,apiUrl) {
 
     $scope.nodes = [];
     $scope.title = "";
@@ -65,6 +73,7 @@ app.controller('AppCtrl', function ($scope,HttpServices,formBuilder,t_bns_id) {
 
 
     var initData = formBuilder.data;
+//    console.log(initData);
     $scope.title = formBuilder.title;
     $scope.col_defs = formBuilder.col_defs
 
@@ -82,7 +91,7 @@ app.controller('AppCtrl', function ($scope,HttpServices,formBuilder,t_bns_id) {
     };
 
     $scope.kidnapper = function(item){
-        HttpServices.get('http://mbns.iscity.com.my/upt_indo/custom/c_ajax_tree_bns_b.php?t_parent_id='+item.id+'&t_bns_id='+t_bns_id)
+        HttpServices.get(apiUrl+'/custom/c_ajax_tree_bns_b.php?t_parent_id='+item.id+'&t_bns_id='+t_bns_id)
                 .then(function(response) {
                     victim = response.data;
                         item.subnodes = $scope.admission(victim,item.fidx);
@@ -112,11 +121,14 @@ app.controller('AppCtrl', function ($scope,HttpServices,formBuilder,t_bns_id) {
 
     if(formBuilder.err_id == undefined){
         var parent = angular.copy([initData[0]]);
+//        console.log(initData);
         $scope.nodes = $scope.admission(parent);
         initData.splice(0, 1);
         $scope.nodes[0].subnodes = $scope.admission(initData,'0');
         $scope.nodes[0].expand = true;
     }else{
+        var parent = angular.copy([initData[0]]);
+        $scope.nodes = $scope.admission(parent);
         $scope.err = true;
         $scope.err_msg = formBuilder.err_msg;
     }
